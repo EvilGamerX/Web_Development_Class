@@ -10,11 +10,11 @@
 	
 	echo "</BR>\n";
 	
-	$text = rawurlencode(file_get_contents($url));
+	$text = file_get_contents($url);
 	
-	strip_tags($text);
+	$text = strip_tags($text);
 	
-	$arr = superExplode(strtolower($text), " \n.\t'%20-%23\";:,%27%26");
+	$arr = superExplode(strtolower($text), "() \n.\t;:,+\"");
 	
 	$disp = array_count_values($arr);
 	
