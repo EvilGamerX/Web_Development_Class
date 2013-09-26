@@ -14,7 +14,7 @@
 	
 	$text = strip_tags($text);
 	
-	$arr = superExplode(strtolower($text), "() \n.\t;:,+\"");
+	$arr = superExplode(strtolower($text), "() \\\n.\t;:,+\"|!?@#$%^&*~`=-_[]{}/<>");
 	
 	$disp = array_count_values($arr);
 	
