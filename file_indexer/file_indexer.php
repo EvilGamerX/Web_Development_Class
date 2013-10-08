@@ -70,14 +70,16 @@
         
     function page_info($file)
     {
-        $meta = get_meta_tags($file);
+        $meta = get_meta_tags($file, TRUE);
+        
+        echo "<BR/>Metatags:<BR/>\n";
         
         foreach($meta as $k=>$item)
         {
             echo "$k => $item</BR>\n";
         }
 	
-        echo "</BR>\n";
+        echo "</BR>Word Count:<BR/>\n";
 
         $text = strtolower(strip_tags(file_get_contents($file)));
         
