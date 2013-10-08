@@ -36,8 +36,7 @@
             closedir($open);
              
             $tmp = dirname($path)."/";
-            $temp = str_replace("//", "/", $tmp);
-            $temp = str_replace("\\", "/", $tmp);
+            $tmp = str_replace(array("\\", "//"), "/", $tmp);
             echo "<a href=\"file_browser.php?path=$tmp\">..</a></BR>\n";
 
                         
@@ -48,8 +47,8 @@
                 foreach($dirs as $print)
                 {
                     $tmp = $path."/".$print."/";
-                    $tmp = str_replace("//", "/", $tmp);
-                    $tmp = str_replace("\\", "/", $tmp);
+                    $tmp = str_replace(array("\\", "//"), "/", $tmp);
+                    #$tmp = str_replace("\\", "/", $tmp);
                     echo "<a href=\"file_browser.php?path=$tmp\">$print</a></BR>\n";
                 }
             }
