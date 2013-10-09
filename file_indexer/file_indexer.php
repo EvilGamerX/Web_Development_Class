@@ -85,13 +85,17 @@
         
         $arr = superExplode($text, "() \r\n.\t;:,+\"|!?@#$\'%^&*~`=-_[]{}/<>\\¶");
         
-        $disp = array_count_values($arr);
-
-        ksort($disp);
-
-        foreach($disp as $k=>$e)
+        if(!empty($arr[0]))
         {
-            echo "$k | $e</BR>\n";
+        
+            $disp = array_count_values($arr);
+
+            ksort($disp);
+
+            foreach($disp as $k=>$e)
+            {
+                echo "$k | $e</BR>\n";
+            }
         }
     }
 	
