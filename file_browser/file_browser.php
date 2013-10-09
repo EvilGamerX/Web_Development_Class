@@ -17,7 +17,9 @@
 	$files = array();
 	$i = 0;
         
-	if($open = opendir($path))
+        $path = strip_tags($path);
+        
+	if(($open = opendir($path)) == TRUE)
 	{
 		while(($elem = readdir($open)) !== FALSE)
 		{

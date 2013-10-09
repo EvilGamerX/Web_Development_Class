@@ -1,4 +1,6 @@
 <?PHP
+
+    #I pledge my honour I have abided by the Stevens honour Code - Stephen Gaspar
 	
     if(isset($_POST["Directory"]))
     {
@@ -11,6 +13,8 @@
         exit();
     }
 
+    $url = strip_tags($url);
+    
     echo "Searching ".$url."<BR/><HR><BR/>\n";
     search_directory($url);
     
@@ -19,7 +23,7 @@
         $url = str_replace(array("\\", "//"), "/", $url."/");
         
         $i = 0;
-        if($open = opendir($url))
+        if(($open = opendir($url)) == TRUE)
 	{
             while(($elem = readdir($open)) !== FALSE)
             {
