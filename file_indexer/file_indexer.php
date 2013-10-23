@@ -1,7 +1,8 @@
 <?PHP
 
     #I pledge my honour I have abided by the Stevens honour Code - Stephen Gaspar
-	
+    include("../include/db.include.php");
+
     if(isset($_POST["Directory"]))
     {
         $url = $_POST["Directory"];
@@ -12,10 +13,26 @@
         echo "<input type=\"submit\" name=\"submit\" value=\"Submit\">";
         exit();
     }
-
+    
+    //echo "as";
+   $linkid = connect();
+   
+   //echo mysql_error();
+   
+   $sql = "TRUNCATE TABLE pages;";
+   send_sql($sql);
+   
+   $sql = "DELETE FROM meta_content;";
+   send_sql($sql);
+   
+   $sql = "DELETE FROM word_count;";
+   send_sql($sql);
+   
     $url = strip_tags($url);
     
-    echo "Searching ".$url."<BR/><HR><BR/>\n";
+    //echo "Searching $url <BR/><HR><BR/>\n";
+    
+    $url = str_replace(";", "\;", $url);
     search_directory($url);
     
     function search_directory($url)
@@ -52,9 +69,10 @@
                         $file_info['extension'] = strtolower($file_info['extension']);
                         if($file_info['extension'] === "html" | $file_info['extension'] === "htm")
                         {
-                            echo $url.$print."<BR/>\n";
+                            $sql = "INSERT INTO pages (page_name, dir) VALUES (\"$print\", \"$url\");";
+                            send_sql($sql);
                             page_info($url.$print);
-                            echo "<HR>\n";
+                            //echo "<HR>\n";
                         }
                     }
                 }
@@ -73,17 +91,25 @@
     }
         
     function page_info($file)
-    {
+    { 
+        
+        $sql = "SELECT pid FROM pages ORDER BY pid DESC LIMIT 1;";
+        $res = mysql_fetch_assoc(send_sql($sql));
+        
+        $pid = $res["pid"];
+      
         $meta = get_meta_tags($file, TRUE);
         
-        echo "<BR/>Metatags:<BR/>\n";
+        //echo "<BR/>Metatags:<BR/>\n";
         
         foreach($meta as $k=>$item)
         {
-            echo "$k => $item</BR>\n";
+            $sql = "INSERT INTO meta_content (pid, meta_tag, meta_data) VALUES ('$pid', '$k', '$item');";
+            send_sql($sql);
+            //echo "$k => $item</BR>\n"   ;
         }
 	
-        echo "</BR>Word Count:<BR/>\n";
+        //echo "</BR>Word Count:<BR/>\n";
 
         $text = strtolower(strip_tags(file_get_contents($file)));
         
@@ -98,7 +124,9 @@
 
             foreach($disp as $k=>$e)
             {
-                echo "$k | $e</BR>\n";
+                $sql = "INSERT INTO word_count (pid, word, word_count) VALUES ('$pid', '$k', '$e');";
+                send_sql($sql);
+                //echo "$k | $e</BR>\n";
             }
         }
     }
